@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:" />
+  <title>PageTurner Bookstore</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <nav aria-label="Main">
+    <a href="#" class="logo">Page<span>Turner</span></a>
+    <ul class="nav-links">
+      <li><a href="#categories">Categories</a></li>
+      <li><a href="#featured">Featured</a></li>
+      <li><a href="#deals">Deals</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="#" class="btn btn-ghost">Sign In</a>
+      <button type="button" id="cartToggle" class="btn btn-primary" aria-label="Open cart">
+        🛒 Cart (<span id="cartCount">0</span>)
+      </button>
+      <button type="button" id="menuToggle" class="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="navDrawer">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+  <div class="nav-drawer" id="navDrawer">
+    <a href="#categories">Categories</a>
+    <a href="#featured">Featured</a>
+    <a href="#deals">Deals</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#">Sign In</a>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Discover Your Next<br><em>Favourite Book</em></h1>
+    <p>Thousands of titles — from bestsellers to hidden gems. Free shipping on orders over $35.</p>
+    <div class="hero-cta">
+      <a href="#featured" class="btn btn-primary btn-lg">Browse Books</a>
+      <a href="#deals" class="btn btn-ghost btn-lg">Today's Deals</a>
+    </div>
+  </section>
+
+  <!-- SEARCH -->
+  <div class="search-section">
+    <form class="search-box" id="searchForm" role="search">
+      <input type="search" id="searchInput" placeholder="Search by title or author…" aria-label="Search books" maxlength="100" />
+      <button type="submit">Search</button>
+    </form>
+  </div>
+
+  <!-- CATEGORIES -->
+  <section class="section" id="categories">
+    <div class="section-header">
+      <h2>Browse by Category</h2>
+      <button type="button" class="link-btn" id="clearFilters">View all →</button>
+    </div>
+    <div class="categories-grid" id="categoriesGrid"></div>
+  </section>
+
+  <!-- FEATURED BOOKS -->
+  <section class="section section-flush" id="featured">
+    <div class="section-header">
+      <h2 id="featuredTitle">Featured Books</h2>
+      <label class="sort">Sort
+        <select id="sortSelect">
+          <option value="featured">Featured</option>
+          <option value="price-asc">Price: low to high</option>
+          <option value="price-desc">Price: high to low</option>
+          <option value="title">Title A–Z</option>
+        </select>
+      </label>
+    </div>
+    <p id="noResults" class="no-results" hidden>No books match your search.</p>
+    <div class="books-grid" id="booksGrid"></div>
+  </section>
+
+  <!-- PROMO BANNER -->
+  <section class="section section-flush" id="deals">
+    <div class="promo-banner">
+      <div>
+        <h2>Summer Reading Sale 🌞</h2>
+        <p>Get up to 40% off on selected titles. Limited time only — stock up your shelf today!</p>
+      </div>
+      <a href="#featured" class="btn btn-white btn-lg">Shop the Sale</a>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section section-flush" id="reviews">
+    <div class="section-header">
+      <h2>What Readers Say</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial">
+        <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+        <p>"Incredible selection and super fast delivery. PageTurner is my go-to for every new release!"</p>
+        <span class="reviewer">— Sarah M., New York</span>
+      </div>
+      <div class="testimonial">
+        <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+        <p>"The recommendations are spot-on. Discovered so many brilliant authors I never would have found."</p>
+        <span class="reviewer">— James K., London</span>
+      </div>
+      <div class="testimonial">
+        <div class="stars" aria-label="4 out of 5 stars">★★★★☆</div>
+        <p>"Great prices, easy checkout, and the packaging keeps every book in perfect condition."</p>
+        <span class="reviewer">— Priya D., Toronto</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter">
+    <h2>Stay in the Story</h2>
+    <p>Get weekly picks, exclusive deals, and reading inspiration straight to your inbox.</p>
+    <form class="newsletter-form" id="newsletterForm" novalidate>
+      <input type="email" id="newsletterEmail" placeholder="your@email.com" aria-label="Email address" maxlength="254" required />
+      <button type="submit" class="btn btn-primary btn-lg">Subscribe</button>
+    </form>
+    <p id="newsletterMsg" class="form-msg" role="status"></p>
+  </section>
+</main>
+
+<!-- CART DRAWER -->
+<div id="overlay" class="overlay" hidden></div>
+<aside id="cart" class="cart" aria-label="Shopping cart" aria-hidden="true">
+  <div class="cart-head">
+    <h2>Your cart</h2>
+    <button type="button" id="cartClose" class="icon-btn" aria-label="Close cart">&times;</button>
+  </div>
+  <ul id="cartItems" class="cart-items"></ul>
+  <p id="cartEmpty" class="no-results">Your cart is empty.</p>
+  <div class="cart-foot">
+    <p id="shipNote" class="ship-note"></p>
+    <div class="total"><span>Total</span><strong id="cartTotal">$0.00</strong></div>
+    <button type="button" id="checkout" class="btn btn-primary btn-lg btn-block" disabled>Checkout</button>
+  </div>
+</aside>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="logo">Page<span>Turner</span></a>
+      <p>Your neighbourhood bookstore, online. Curating great reads since 2018.</p>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="#featured">New Arrivals</a></li>
+        <li><a href="#featured">Bestsellers</a></li>
+        <li><a href="#deals">Sale</a></li>
+        <li><a href="#">Gift Cards</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Help</h4>
+      <ul>
+        <li><a href="#">My Account</a></li>
+        <li><a href="#">Track Order</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 PageTurner Bookstore. All rights reserved.</span>
+    <span>Privacy Policy · Terms of Service</span>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
